@@ -1,0 +1,11 @@
+Buiding Chromium ( Host )
+-------------------------
+
+	# export IDP_ROOT=<idp root directory>
+	  example IDP_ROOT=/opt/WindRiver7
+	# make chromium
+	# make burn-usb USB_dev=/dev/sdX
+
+Running Chromium ( Target )
+---------------------------
+	# google-chrome

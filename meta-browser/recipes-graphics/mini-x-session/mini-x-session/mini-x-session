@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# Very simple session manager for Mini X
+#
+
+matchbox-terminal&
+exec matchbox-window-manager
