@@ -1,0 +1,38 @@
+diff --git a/build/common.gypi b/build/common.gypi
+index 066b0b4..5ad0d22 100644
+--- a/build/common.gypi
++++ b/build/common.gypi
+@@ -3047,7 +3047,7 @@
+             ],
+             'cflags_cc!': [
+               # Necessary because llvm.org/PR10448 is WONTFIX (crbug.com/90453).
+-              '-Wsign-compare',
++              #'-Wsign-compare',
+             ]
+           }],
+           # TODO: Fix all warnings on chromeos too.
+@@ -3606,7 +3606,7 @@
+           '-fvisibility-inlines-hidden',
+           # GCC turns on -Wsign-compare for C++ under -Wall, but clang doesn't,
+           # so we specify it explicitly.  (llvm.org/PR10448, crbug.com/90453)
+-          '-Wsign-compare',
++          #'-Wsign-compare',
+         ],
+         'ldflags': [
+           '-pthread', '-Wl,-z,noexecstack',
+
+
+diff --git a/pdf/chunk_stream.cc b/pdf/chunk_stream.cc
+index 7ac8f97..357c3d9 100644
+--- a/pdf/chunk_stream.cc
++++ b/pdf/chunk_stream.cc
+@@ -4,7 +4,9 @@
+ 
+ #include "pdf/chunk_stream.h"
+ 
++#ifndef __STDC_LIMIT_MACROS
+ #define __STDC_LIMIT_MACROS
++#endif
+ #ifdef _WIN32
+ #include <limits.h>
+ #else

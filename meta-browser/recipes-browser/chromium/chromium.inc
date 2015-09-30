@@ -86,23 +86,18 @@ GYP_DEFINES += " release_extra_cflags='' sysroot='' "
 
 EXTRA_OEGYP =	" \
 	-Dangle_use_commit_id=0 \
+	-Dtarget_arch=x64 \
 	-Dclang=0 \
 	-Dhost_clang=0 \
 	-Ddisable_fatal_linker_warnings=1 \
 	${@base_contains('DISTRO_FEATURES', 'ld-is-gold', '', '-Dlinux_use_gold_binary=0', d)} \
 	${@base_contains('DISTRO_FEATURES', 'ld-is-gold', '', '-Dlinux_use_gold_flags=0', d)} \
-	-I ${WORKDIR}/include.gypi \
 	-I ${WORKDIR}/chromium.gypi \
 	${@bb.utils.contains('PACKAGECONFIG', 'component-build', '-I ${WORKDIR}/component-build.gypi', '', d)} \
 	-f ninja \
 "
 
-python() {
-    if d.getVar('TARGET_ARCH', True) == 'i586':
-        d.appendVar('EXTRA_OEGYP', ' -Dtarget_arch=ia32 ')
-    if d.getVar('TARGET_ARCH', True) == 'x86_64':
-        d.appendVar('EXTRA_OEGYP', ' -Dtarget_arch=x64 ')
-}
+
 
 CHROMIUM_EXTRA_ARGS = " \
 	${@bb.utils.contains('PACKAGECONFIG', 'use-egl', '--use-gl=egl', '', d)} \

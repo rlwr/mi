@@ -11,11 +11,6 @@ SRC_URI += "\
 SRC_URI[md5sum] = "aba8a1b9945d2c0f203294e43b68cdab"
 SRC_URI[sha256sum] = "405f52c6649f1d2937952fbcfcd238ba058db7d13edf4705f7027805f3ce1809"
 
-SRC_URI += ""
-
-CFLAGS_append = " -Wno-sign-compare "
-CXXFLAGS_append = " -Wno-sign-compare -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS "
-
 PACKAGECONFIG += " use-egl disable-unwanted-background-traffic remove-badflags-warnings "
 
 CHROMIUM_EXTRA_ARGS += " --no-sandbox --enable-experimental-extension-apis --javascript-harmony "

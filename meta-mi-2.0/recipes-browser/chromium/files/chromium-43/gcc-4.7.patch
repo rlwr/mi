@@ -1,0 +1,220 @@
+diff --git a/ash/shell.cc b/ash/shell.cc
+index ee93a34..0263aa6 100644
+--- a/ash/shell.cc
++++ b/ash/shell.cc
+@@ -642,7 +642,7 @@ Shell::Shell(ShellDelegate* delegate)
+ #endif  // defined(OS_CHROMEOS)
+       native_cursor_manager_(new AshNativeCursorManager),
+       cursor_manager_(
+-          scoped_ptr<::wm::NativeCursorManager>(native_cursor_manager_)),
++          scoped_ptr< ::wm::NativeCursorManager>(native_cursor_manager_)),
+       simulate_modal_window_open_for_testing_(false),
+       is_touch_hud_projection_enabled_(false) {
+   DCHECK(delegate_.get());
+diff --git a/build/common.gypi b/build/common.gypi
+index 066b0b4..5ad0d22 100644
+--- a/build/common.gypi
++++ b/build/common.gypi
+@@ -3047,7 +3047,7 @@
+             ],
+             'cflags_cc!': [
+               # Necessary because llvm.org/PR10448 is WONTFIX (crbug.com/90453).
+-              '-Wsign-compare',
++              #'-Wsign-compare',
+             ]
+           }],
+           # TODO: Fix all warnings on chromeos too.
+@@ -3606,7 +3606,7 @@
+           '-fvisibility-inlines-hidden',
+           # GCC turns on -Wsign-compare for C++ under -Wall, but clang doesn't,
+           # so we specify it explicitly.  (llvm.org/PR10448, crbug.com/90453)
+-          '-Wsign-compare',
++          #'-Wsign-compare',
+         ],
+         'ldflags': [
+           '-pthread', '-Wl,-z,noexecstack',
+@@ -4575,7 +4575,7 @@
+                   # See comment for -Wno-c++11-narrowing.
+                   '-Wno-narrowing',
+                   # TODO(thakis): Remove, http://crbug.com/263960
+-                  '-Wno-literal-suffix',
++                  #'-Wno-literal-suffix',
+                 ],
+               }],
+             ],
+@@ -4588,7 +4588,7 @@
+                   # See comment for -Wno-c++11-narrowing.
+                   '-Wno-narrowing',
+                   # TODO(thakis): Remove, http://crbug.com/263960
+-                  '-Wno-literal-suffix',
++                  #'-Wno-literal-suffix',
+                 ],
+               }],
+             ],
+
+diff --git a/content/public/browser/permission_manager.h b/content/public/browser/permission_manager.h
+index 6a56e0b..0acdc6b 100644
+--- a/content/public/browser/permission_manager.h
++++ b/content/public/browser/permission_manager.h
+@@ -16,7 +16,7 @@ class WebContents;
+ 
+ class CONTENT_EXPORT PermissionManager {
+  public:
+-  virtual ~PermissionManager() = default;
++  virtual ~PermissionManager() noexcept(false) {};
+ 
+   virtual void RequestPermission(
+       PermissionType permission,
+
+diff --git a/net/proxy/mojo_proxy_resolver_factory.h b/net/proxy/mojo_proxy_resolver_factory.h
+index eaf2774..7218184 100644
+--- a/net/proxy/mojo_proxy_resolver_factory.h
++++ b/net/proxy/mojo_proxy_resolver_factory.h
+@@ -21,7 +21,7 @@ class MojoProxyResolverFactory {
+                       interfaces::HostResolverPtr host_resolver) = 0;
+ 
+  protected:
+-  virtual ~MojoProxyResolverFactory() = default;
++  virtual ~MojoProxyResolverFactory() noexcept(false) {};
+ };
+ 
+ }  // namespace net
+diff --git a/pdf/chunk_stream.cc b/pdf/chunk_stream.cc
+index 7ac8f97..357c3d9 100644
+--- a/pdf/chunk_stream.cc
++++ b/pdf/chunk_stream.cc
+@@ -4,7 +4,9 @@
+ 
+ #include "pdf/chunk_stream.h"
+ 
++#ifndef __STDC_LIMIT_MACROS
+ #define __STDC_LIMIT_MACROS
++#endif
+ #ifdef _WIN32
+ #include <limits.h>
+ #else
+diff --git a/storage/browser/blob/internal_blob_data.h b/storage/browser/blob/internal_blob_data.h
+index aa47101..ebd9cf9 100644
+--- a/storage/browser/blob/internal_blob_data.h
++++ b/storage/browser/blob/internal_blob_data.h
+@@ -68,10 +68,10 @@ class InternalBlobData {
+     void RemoveBlobFromShareableItems(const std::string& blob_uuid);
+ 
+     // The builder is invalid after calling this method.
+-    scoped_ptr<::storage::InternalBlobData> Build();
++    scoped_ptr< ::storage::InternalBlobData> Build();
+ 
+    private:
+-    scoped_ptr<::storage::InternalBlobData> data_;
++    scoped_ptr< ::storage::InternalBlobData> data_;
+ 
+     DISALLOW_COPY_AND_ASSIGN(Builder);
+   };
+diff --git a/third_party/WebKit/Source/core/frame/EventHandlerRegistry.cpp b/third_party/WebKit/Source/core/frame/EventHandlerRegistry.cpp
+index 153730e..a5dadd5 100644
+--- a/third_party/WebKit/Source/core/frame/EventHandlerRegistry.cpp
++++ b/third_party/WebKit/Source/core/frame/EventHandlerRegistry.cpp
+@@ -198,7 +198,7 @@ void EventHandlerRegistry::notifyDidAddOrRemoveEventHandlerTarget(EventHandlerCl
+ 
+ DEFINE_TRACE(EventHandlerRegistry)
+ {
+-    visitor->template registerWeakMembers<EventHandlerRegistry, &EventHandlerRegistry::clearWeakMembers>(this);
++    visitor->registerWeakMembers<EventHandlerRegistry, &EventHandlerRegistry::clearWeakMembers>(this);
+ }
+ 
+ void EventHandlerRegistry::clearWeakMembers(Visitor* visitor)
+diff --git a/third_party/WebKit/Source/core/streams/ReadableStreamTest.cpp b/third_party/WebKit/Source/core/streams/ReadableStreamTest.cpp
+index 49fe5cf..8461848 100644
+--- a/third_party/WebKit/Source/core/streams/ReadableStreamTest.cpp
++++ b/third_party/WebKit/Source/core/streams/ReadableStreamTest.cpp
+@@ -29,7 +29,7 @@ using ::testing::Return;
+ 
+ namespace {
+ 
+-using Checkpoint = ::testing::StrictMock<::testing::MockFunction<void(int)>>;
++using Checkpoint = ::testing::StrictMock< ::testing::MockFunction<void(int)>>;
+ using StringStream = ReadableStreamImpl<ReadableStreamChunkTypeTraits<String>>;
+ 
+ class StringCapturingFunction : public ScriptFunction {
+diff --git a/third_party/WebKit/Source/modules/mediasource/MediaSource.cpp b/third_party/WebKit/Source/modules/mediasource/MediaSource.cpp
+index a12a169..068b5c6 100644
+--- a/third_party/WebKit/Source/modules/mediasource/MediaSource.cpp
++++ b/third_party/WebKit/Source/modules/mediasource/MediaSource.cpp
+@@ -283,7 +283,7 @@ DEFINE_TRACE(MediaSource)
+ #endif
+     visitor->trace(m_sourceBuffers);
+     visitor->trace(m_activeSourceBuffers);
+-    visitor->template registerWeakMembers<MediaSource, &MediaSource::clearWeakMembers>(this);
++    visitor->registerWeakMembers<MediaSource, &MediaSource::clearWeakMembers>(this);
+     RefCountedGarbageCollectedEventTargetWithInlineData<MediaSource>::trace(visitor);
+     ActiveDOMObject::trace(visitor);
+ }
+diff --git a/third_party/WebKit/Source/modules/mediastream/RTCDataChannel.cpp b/third_party/WebKit/Source/modules/mediastream/RTCDataChannel.cpp
+index 4d43f81..5c8ce2c 100644
+--- a/third_party/WebKit/Source/modules/mediastream/RTCDataChannel.cpp
++++ b/third_party/WebKit/Source/modules/mediastream/RTCDataChannel.cpp
+@@ -335,7 +335,7 @@ void RTCDataChannel::clearWeakMembers(Visitor* visitor)
+ DEFINE_TRACE(RTCDataChannel)
+ {
+     visitor->trace(m_scheduledEvents);
+-    visitor->template registerWeakMembers<RTCDataChannel, &RTCDataChannel::clearWeakMembers>(this);
++    visitor->registerWeakMembers<RTCDataChannel, &RTCDataChannel::clearWeakMembers>(this);
+     RefCountedGarbageCollectedEventTargetWithInlineData<RTCDataChannel>::trace(visitor);
+ }
+ 
+diff --git a/third_party/mojo/src/mojo/public/c/system/macros.h b/third_party/mojo/src/mojo/public/c/system/macros.h
+index 7f28e18..3ab51eb 100644
+--- a/third_party/mojo/src/mojo/public/c/system/macros.h
++++ b/third_party/mojo/src/mojo/public/c/system/macros.h
+@@ -66,7 +66,8 @@ inline void mojo_ignore_result(const T&) {
+ // Unlike the C++11 |alignas()|, |alignment| must be an integer. It may not be a
+ // type, nor can it be an expression like |MOJO_ALIGNOF(type)| (due to the
+ // non-C++11 MSVS version).
+-#if __cplusplus >= 201103L
++#if __cplusplus >= 201103L && \
++	(defined(__clang__) || (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 >= 40800))
+ #define MOJO_ALIGNAS(alignment) alignas(alignment)
+ #elif defined(__GNUC__)
+ #define MOJO_ALIGNAS(alignment) __attribute__((aligned(alignment)))
+diff --git a/third_party/webrtc/modules/audio_coding/codecs/audio_decoder.h b/third_party/webrtc/modules/audio_coding/codecs/audio_decoder.h
+index 1ac02c5..d6347fc 100644
+--- a/third_party/webrtc/modules/audio_coding/codecs/audio_decoder.h
++++ b/third_party/webrtc/modules/audio_coding/codecs/audio_decoder.h
+@@ -31,8 +31,8 @@ class AudioDecoder {
+   // Used by PacketDuration below. Save the value -1 for errors.
+   enum { kNotImplemented = -2 };
+ 
+-  AudioDecoder() = default;
+-  virtual ~AudioDecoder() = default;
++  AudioDecoder() noexcept(false) {};
++  virtual ~AudioDecoder() noexcept(false) {};
+ 
+   // Decodes |encode_len| bytes from |encoded| and writes the result in
+   // |decoded|. The maximum bytes allowed to be written into |decoded| is
+diff --git a/ui/base/clipboard/clipboard_aurax11.cc b/ui/base/clipboard/clipboard_aurax11.cc
+index de56858..45a69ae 100644
+--- a/ui/base/clipboard/clipboard_aurax11.cc
++++ b/ui/base/clipboard/clipboard_aurax11.cc
+@@ -393,7 +393,7 @@ void ClipboardAuraX11::AuraX11Details::TakeOwnershipOfSelection(
+ 
+ SelectionData ClipboardAuraX11::AuraX11Details::RequestAndWaitForTypes(
+     ClipboardType type,
+-    const std::vector<::Atom>& types) {
++    const std::vector< ::Atom>& types) {
+   ::Atom selection_name = LookupSelectionForClipboardType(type);
+   if (XGetSelectionOwner(x_display_, selection_name) == x_window_) {
+     // We can local fastpath instead of playing the nested message loop game
+@@ -475,11 +475,11 @@ TargetList ClipboardAuraX11::AuraX11Details::WaitAndGetTargetsList(
+   return TargetList(out, &atom_cache_);
+ }
+ 
+-std::vector<::Atom> ClipboardAuraX11::AuraX11Details::GetTextAtoms() const {
++std::vector< ::Atom> ClipboardAuraX11::AuraX11Details::GetTextAtoms() const {
+   return GetTextAtomsFrom(&atom_cache_);
+ }
+ 
+-std::vector<::Atom> ClipboardAuraX11::AuraX11Details::GetAtomsForFormat(
++std::vector< ::Atom> ClipboardAuraX11::AuraX11Details::GetAtomsForFormat(
+     const Clipboard::FormatType& format) {
+   std::vector< ::Atom> atoms;
+   atoms.push_back(atom_cache_.GetAtom(format.ToString().c_str()));
