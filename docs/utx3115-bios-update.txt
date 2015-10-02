@@ -1,0 +1,60 @@
+BIOS Update Instructions:
+
+1. 	Determine the current BIOS version by booting the GW and rapidly pressing the DEL key on the connected keyboard to enter BIOS settings. 
+	If you see x64 anywhere on the line that begins with Core Version, you already have a 64-Bit BIOS. You can go on with step 5. Otherwise, continue with the BIOS update instructions.
+
+
+2. 	Insert the min 1G USB drive into your development system and determine the mount device using the lsblk command (we use /dev/sdb here as example)
+
+3.	Unmount the flash drive
+
+		umount /dev/sdb
+
+4.	Format the flash drive with the name bios
+		
+		sudo mkdosfs -n 'bios' -I /dev/sdb
+
+5.	Remove and reinsert the flash drive (the drive is now mounted on /media/bios or /media/<username>/bios)
+
+6.	Copy all necessary files, that are listed above onto the flash drive using (assuming that the current directory contains the files):
+	
+		tar  xzf utx3115-64bits-bios.tgz -C /media/<username>/bios/
+
+7.	Unmout the flash drive:
+	
+		umount /media/<username>/bios
+
+8.	Change the Boot Priority to EFI Shell:
+
+	a. Plugin the USB flash drive into the UTX-3115
+	b. Power up the target system and immediately press the DEL key to enter BIOS setup
+	c. On the Boot tab change the Boot Option #1 to UEFI: Built-in EFI Shell
+	d. Press F4 and then Enter to save and exit the BIOS.
+
+9.	The system now boots into the EFI Shell, it will display the drive mappings (use map -r, if the listing was too fast; use the page up and page down keys to see all device listings)
+
+10.	Determine the device, that is marked as "Removable HardDisk" and remember its identifier (here we use fs0 -- can also be a blkX device)
+
+11.	At the EFI Shell enter fs0: to enter the file system of the USB device
+
+12.	Use ls to confirm the BIOS files are present (listed above)
+
+13.	To update the 32-Bit BIOS to 64-Bit BIOS enter:
+	
+		fpt.efi -F MF02000IF60V111.bin
+
+14.	The BIOS update succeed, if the fpt command shows after execution:
+
+	FPT Operation Passed   
+
+15.	Shut down the target system by pressing the power button
+
+16.	Remove the USB flash drive from the target system
+
+The newly upgraded BIOS can be confirmed by booting the target system up again, entering the BIOS again and checking, if there is the value x64 somewhere in the Core Version line.
+
+Furthermore, the display settings have to be reinitialized to VGA, HDMI or micro HDMI:
+
+	Chipset Menu > North Bridge > LCD Control > Primary IGFX Boot Display
+
+Also confirm, that the Boot Device Option #1 is set to the default value again

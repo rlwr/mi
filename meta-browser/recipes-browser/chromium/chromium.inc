@@ -78,15 +78,14 @@ PACKAGECONFIG[ignore-lost-context] = ""
 PACKAGECONFIG[impl-side-painting] = ""
 PACKAGECONFIG[use-gl] = ""
 
-# Use WR Linux 5 specific build options
-EXTRA_OEGYP_append = "-I ${WORKDIR}/chromium.gypi"
+GYP_ARCH_DEFINES_i586 = " target_arch=ia32"
+GYP_ARCH_DEFINES_x86-64 = " target_arch=x64"
 
 # Avoid passing switches incompatible with gcc 4.6
-GYP_DEFINES += " release_extra_cflags='' sysroot='' "
+GYP_DEFINES += " ${GYP_ARCH_DEFINES} release_extra_cflags='' sysroot='' "
 
 EXTRA_OEGYP =	" \
-	-Dangle_use_commit_id=0 \
-	-Dtarget_arch=x64 \
+	-Dangle_use_commit_id=0 \ 
 	-Dclang=0 \
 	-Dhost_clang=0 \
 	-Ddisable_fatal_linker_warnings=1 \
@@ -96,8 +95,6 @@ EXTRA_OEGYP =	" \
 	${@bb.utils.contains('PACKAGECONFIG', 'component-build', '-I ${WORKDIR}/component-build.gypi', '', d)} \
 	-f ninja \
 "
-
-
 
 CHROMIUM_EXTRA_ARGS = " \
 	${@bb.utils.contains('PACKAGECONFIG', 'use-egl', '--use-gl=egl', '', d)} \

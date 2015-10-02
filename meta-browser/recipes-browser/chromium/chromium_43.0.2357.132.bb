@@ -7,10 +7,11 @@ SRC_URI += "\
         file://chromium-43/0004-Remove-hard-coded-values-for-CC-and-CXX.patch \
         file://chromium-43/unistd-2.patch \
 	file://chromium-43/enable_vaapi_on_linux.patch \
+	file://chromium-43/egldisplay.patch \
 "
 SRC_URI[md5sum] = "aba8a1b9945d2c0f203294e43b68cdab"
 SRC_URI[sha256sum] = "405f52c6649f1d2937952fbcfcd238ba058db7d13edf4705f7027805f3ce1809"
 
-PACKAGECONFIG += " use-egl disable-unwanted-background-traffic remove-badflags-warnings "
+PACKAGECONFIG += " enable-hardware-acceleration use-egl disable-unwanted-background-traffic remove-badflags-warnings ignore-lost-context ignore-lost-context"
 
 CHROMIUM_EXTRA_ARGS += " --no-sandbox --enable-experimental-extension-apis --javascript-harmony "
