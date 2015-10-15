@@ -149,6 +149,7 @@ do_install() {
 		install -Dm 0755 ${B}/out/${CHROMIUM_BUILD_TYPE}/lib/libcef.so ${D}${libdir}/${BPN}/libcef.so
 	fi
 	if [ -f "${B}/out/${CHROMIUM_BUILD_TYPE}/chrome" ]; then
+		cp ${B}/out/${CHROMIUM_BUILD_TYPE}/chrome ${B}/out/${CHROMIUM_BUILD_TYPE}/chrome_ns
 		strip ${B}/out/${CHROMIUM_BUILD_TYPE}/chrome
 		#paxctl -c -m ${B}/out/${CHROMIUM_BUILD_TYPE}/chrome
 		install -Dm 0755 ${B}/out/${CHROMIUM_BUILD_TYPE}/chrome ${D}${bindir}/${BPN}/chrome
@@ -193,18 +194,6 @@ do_install() {
 }
 
 INSANE_SKIP_${PN} += "already-stripped installed-vs-shipped"
-
-PACKAGES =+ "${PN}-codecs-ffmpeg ${PN}-plugin-pdf"
-
-FILES_${PN}-codecs-ffmpeg = "${libdir}/${BPN}/libffmpegsumo.so"
-FILES_${PN}-plugin-pdf = "${libdir}/${BPN}/libpdf.so"
-
-FILES_${PN} = "${bindir}/${BPN} ${datadir}/applications ${sbindir}/ ${libdir}/${BPN}/"
-FILES_${PN} += "${bindir} ${libdir}"
-FILES_${PN} += "${bindir}/${BPN}/*.pak"
-FILES_${PN} += "${bindir}/${BPN}/locales/*.pak"
-
-FILES_${PN}-dbg += "${bindir}/${BPN}/.debug/ ${libdir}/${BPN}/.debug/ ${libdir}/.debug/"
 
 PACKAGE_DEBUG_SPLIT_STYLE = "debug-without-src"
 
