@@ -4,6 +4,8 @@ endif
 
 CURRENT_DIR = $(shell pwd)
 
+LAYERS:=$(CURRENT_DIR)/meta-intel
+
 ifneq ("$(wildcard $(IDP_ROOT)/wrlinux-7/wrlinux/configure)","")
 
 CONFIGURE_CMD=$(IDP_ROOT)/wrlinux-7/wrlinux/configure
@@ -13,7 +15,7 @@ CONFIGURE_OPTIONS= --enable-board=intel-baytrail-64 --enable-kernel=idp --enable
 		   --with-template=feature/executable-memory-protection \
 		   --without-layer=wr-mcafee,wr-srm 
 DEPLOY_OPTIONS= -f export/images/wrlinux-image-idp-intel-baytrail-64.tar.bz2 -y -u -p 4G
-LAYERS:=$(CURRENT_DIR)/meta-mi-3.0
+LAYERS:=$(LAYERS),$(CURRENT_DIR)/meta-mi-3.0
 WORK_DIR=$(CURRENT_DIR)/build-mi-3.0
 
 else ifneq ("$(wildcard $(IDP_ROOT)/wrlinux-5/wrlinux/configure)","")
@@ -25,7 +27,7 @@ CONFIGURE_OPTIONS= --enable-board=intel-atom-baytrail --enable-kernel=standard -
 		   --with-template=feature/intel-emgd-baytrail \
                    --without-layer=meta-java,meta-java-dl,wr-mcafee,wr-srm 
 DEPLOY_OPTIONS= -f export/images/wrlinux-image-glibc-idp-intel-atom-baytrail.tar.bz2 -y -u -b intel-atom-baytrail -g ./grub-0.97
-LAYERS:=$(CURRENT_DIR)/meta-mi-2.0
+LAYERS:=$(LAYERS),$(CURRENT_DIR)/meta-mi-2.0
 WORK_DIR=$(CURRENT_DIR)/build-mi-2.0
 
 else
