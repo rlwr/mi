@@ -13,6 +13,7 @@
     'use_alsa': 1,
     'use_cups': 1,
     'use_gconf': 0,
+    'use_glib': 0,
     'use_gio': 1,
     'use_gnome_keyring': 0,
     'use_kerberos': 0,
