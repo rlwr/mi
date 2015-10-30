@@ -4,7 +4,7 @@ endif
 
 CURRENT_DIR = $(shell pwd)
 
-LAYERS:=$(CURRENT_DIR)/meta-intel
+LAYERS:=$(CURRENT_DIR)/meta-intel,$(CURRENT_DIR)/meta-oic,$(CURRENT_DIR)/meta-iot
 
 ifneq ("$(wildcard $(IDP_ROOT)/wrlinux-7/wrlinux/configure)","")
 
@@ -15,7 +15,7 @@ CONFIGURE_OPTIONS= --enable-board=intel-baytrail-64 --enable-kernel=idp --enable
 		   --with-template=feature/executable-memory-protection \
 		   --without-layer=wr-mcafee,wr-srm 
 DEPLOY_OPTIONS= -f export/images/wrlinux-image-idp-intel-baytrail-64.tar.bz2 -y -u -p 4G
-LAYERS:=$(LAYERS),$(CURRENT_DIR)/meta-mi-3.0
+LAYERS:=$(LAYERS),$(CURRENT_DIR)/meta-mi-3.0,wr-iot
 WORK_DIR=$(CURRENT_DIR)/build-mi-3.0
 
 else ifneq ("$(wildcard $(IDP_ROOT)/wrlinux-5/wrlinux/configure)","")
