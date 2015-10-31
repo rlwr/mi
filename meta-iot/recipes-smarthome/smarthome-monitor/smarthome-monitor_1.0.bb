@@ -10,6 +10,8 @@ SRC_URI = "file://smarthome-monitor_${PV}.tgz \
 SRC_URI[md5sum] = "6ce877fd1dfe32f636b203b46b25fa00"
 SRC_URI[sha256sum] = "d61e2943bf5be52875bbd0a48053d7019cc9f517ada4065b788b894c5ffbc413"
 
+RDEPENDS_${PN} = "iotivity-nodejs"
+
 INSANE_SKIP_${PN} += "installed-vs-shipped"
 
 PREFIX = "/opt/smarthome-monitor"
