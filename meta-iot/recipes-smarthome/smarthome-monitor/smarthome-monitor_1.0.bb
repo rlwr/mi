@@ -25,10 +25,12 @@ do_install() {
 	install -m 644  ${S}/config.js ${S}/iotclient.js ${D}/${PREFIX}-client
 	cp -rfp  ${S}/public ${S}/views ${S}/routes ${S}/node_modules ${D}/${PREFIX}-client
 	install -m 0644 ${WORKDIR}/smarthome-monitor-client.service ${D}${systemd_unitdir}/system
+	sed -i 's|@PREFIX@|${PREFIX}|g' ${D}${systemd_unitdir}/system/smarthome-monitor-client.service 
 
 	install -m 644  ${S}/config.js ${S}/iotserver.js ${D}/${PREFIX}-server
 	cp -rfp ${S}/node_modules ${D}/${PREFIX}-server
 	install -m 0644 ${WORKDIR}/smarthome-monitor-server.service ${D}${systemd_unitdir}/system
+	sed -i 's|@PREFIX@|${PREFIX}|g' ${D}${systemd_unitdir}/system/smarthome-monitor-server.service 
 } 
 
 PACKAGES = "${PN}-client ${PN}-server"

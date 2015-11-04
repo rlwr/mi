@@ -1,0 +1,12 @@
+[Unit]
+Description=Smart Home Monitor Client
+After=network.target multi-user.target
+
+[Service]
+Type=forking
+ExecStart=cd @PREFIX@-client && node iotclient.js
+ExecStop=/bin/kill -15 $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
