@@ -4,7 +4,7 @@ endif
 
 CURRENT_DIR = $(shell pwd)
 
-LAYERS:=$(CURRENT_DIR)/meta-intel,$(CURRENT_DIR)/meta-iot
+LAYERS:=$(CURRENT_DIR)/meta-intel,$(CURRENT_DIR)/meta-iot,$(CURRENT_DIR)/meta-browser
 
 ifneq ("$(wildcard $(IDP_ROOT)/wrlinux-7/wrlinux/configure)","")
 
@@ -34,6 +34,11 @@ else
 $(error IDP_ROOT doesn't contain a valid idp sdk)
 endif
 
+all: image
+
+image: .config
+	@make -C $(WORK_DIR) fs
+
 .config:
 	@mkdir -p $(WORK_DIR)
 	@cd $(WORK_DIR) && \
@@ -43,9 +48,6 @@ endif
 
 config: .config
 
-chromium: 
-	@make config LAYERS=$(LAYERS),$(CURRENT_DIR)/meta-browser
-	@make -C $(WORK_DIR) fs
 
 burn-usb:
 ifndef USB_DEV
@@ -55,7 +57,6 @@ endif
 	@cd $(WORK_DIR) && \
 	sudo ./deploy.sh $(DEPLOY_OPTIONS) -d $(USB_DEV)
 
-all: chromium
 
 clean:
 	@rm -f .config

@@ -8,22 +8,18 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://resource/include/OCApi.h;beginline=1;endline=19;md5=fc5a615cf1dc3880967127bc853b3e0c"
 SRC_URI = "https://mirrors.kernel.org/iotivity/1.0.0/iotivity-1.0.0.tar.gz;name=iotivity \
            https://googletest.googlecode.com/files/gtest-1.7.0.zip;name=gtest \
-	   https://github.com/01org/tinycbor.git;name=cbor;destsuffix=iotivity-1.0.0/extlibs/tinycbor/tinycbor \
            https://github.com/dascandy/hippomocks/archive/2f40aa11e31499432283b67f9d3449a3cd7b9c4d.zip \
            file://arch.patch;patch=1 \
            file://pkgconf.patch;patch=1 \
            file://zigbeepluginignore.patch;patch=1 \
            file://hippomocks_mips_patch \
           "	  
-#git://github.com/01org/tinycbor.git;protocol=https;name=cbor;destsuffix=iotivity-1.0.0/extlibs/tinycbor/tinycbor 
 SRC_URI[iotivity.md5sum] = "4bcbabffc1734c664bbdf8fedfa60543"
 SRC_URI[iotivity.sha256sum] = "e85c5b730193707c2d96332954b29136eaf71966d459ea030ffc26b2622145c8"
-SRC_URI[cbor.md5sum] = "a294a242b829b75834833ca94ee352ab"
-SRC_URI[cbor.sha256sum] = "da06a01c0623557b57f4631aa77d23a801bdb803e8f38345dc7f090867c426ec"
 SRC_URI[gtest.md5sum] = "2d6ec8ccdf5c46b05ba54a9fd1d130d7"
 SRC_URI[gtest.sha256sum] = "247ca18dd83f53deb1328be17e4b1be31514cedfc1e3424f672bf11fd7e0d60d"
 SRC_URI[md5sum] = "d54eb32ea45d6d2b624c87e117f6c0cf"
-SRC_URI[sha256sum] = "f57fa8cc1e2f76f1769891a266f2715295baf2333d504f628c674767646ac48"
+SRC_URI[sha256sum] = "0f57fa8cc1e2f76f1769891a266f2715295baf2333d504f628c674767646ac48"
 
 inherit scons
 

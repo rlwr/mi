@@ -7,10 +7,10 @@ SRC_URI = "file://smarthome-monitor_${PV}.tgz \
 	   file://smarthome-monitor-client.service \
 	   file://smarthome-monitor-server.service "
 
-SRC_URI[md5sum] = "6ce877fd1dfe32f636b203b46b25fa00"
-SRC_URI[sha256sum] = "d61e2943bf5be52875bbd0a48053d7019cc9f517ada4065b788b894c5ffbc413"
+SRC_URI[md5sum] = "9eca20e05044f4e245ffb4377f3a8656"
+SRC_URI[sha256sum] = "464053e07b98982883b2364a50ac85137d8dad7b7d86da74d29d1af1af0a37af"
 
-RDEPENDS_${PN} = "iotivity-nodejs"
+RDEPENDS_${PN} = "lib32-iotivity-nodejs"
 
 INSANE_SKIP_${PN} += "installed-vs-shipped"
 
@@ -32,6 +32,9 @@ do_install() {
 	install -m 0644 ${WORKDIR}/smarthome-monitor-server.service ${D}${systemd_unitdir}/system
 	sed -i 's|@PREFIX@|${PREFIX}|g' ${D}${systemd_unitdir}/system/smarthome-monitor-server.service 
 } 
+
+SYSTEMD_SERVICE_${PN}-client = "smarthome-monitor-client.service"
+SYSTEMD_SERVICE_${PN}-server = "smarthome-monitor-server.service"
 
 PACKAGES = "${PN}-client ${PN}-server"
 
