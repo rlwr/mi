@@ -7,10 +7,10 @@ SRC_URI = "file://smarthome-monitor_${PV}.tgz \
 	   file://smarthome-monitor-client.service \
 	   file://smarthome-monitor-server.service "
 
-SRC_URI[md5sum] = "9eca20e05044f4e245ffb4377f3a8656"
-SRC_URI[sha256sum] = "464053e07b98982883b2364a50ac85137d8dad7b7d86da74d29d1af1af0a37af"
+SRC_URI[md5sum] = "73609ce97c9bc239b8d06f8ef4bcb6a9"
+SRC_URI[sha256sum] = "0dea8bc3296c2321a92568a2aabf6033afe657cf9e89b6413338aa540d1c8d0e"
 
-RDEPENDS_${PN} = "lib32-iotivity-nodejs"
+RDEPENDS_${PN} = "iotivity-nodejs"
 
 INSANE_SKIP_${PN} += "installed-vs-shipped"
 

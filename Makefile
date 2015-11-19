@@ -56,6 +56,7 @@ ifndef USB_DEV
 endif
 	@cd $(WORK_DIR) && \
 	sudo ./deploy.sh $(DEPLOY_OPTIONS) -d $(USB_DEV)
+	echo " "
 
 
 clean:
