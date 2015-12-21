@@ -1,0 +1,116 @@
+--- init.orig	2015-10-27 15:38:35.734208416 +0100
++++ init	2015-10-27 16:08:38.945758439 +0100
+@@ -72,7 +72,6 @@
+ 	done
+ 
+ 	echo "[ramfs]: got root device: ${ROOTDEV}"
+-	mount -o $ROOTMODE ${ROOTDEV} /mnt
+ 
+ fi
+ 
+@@ -81,6 +80,105 @@
+ 	grep -q 'console=' /proc/cmdline && /bin/sh $i > /dev/null || /bin/sh $i
+ done
+ 
++# On first boot create encryption key, seal it into TPM, and encrypt the whole device
++# before mounting it back into use. Code adapted from:
++# <project>/layers/wr-idp/wr-srm/recipes-core/cryptsetup/files/encrypt-storage
++
++efi_partition=`echo ${ROOTDEV} | awk '{print substr($0, 0, length($0)-1)1}'`
++temp_key=/tmp/temp_key
++mapper_dev_name=rootfs
++mapper_dev_path=/dev/mapper/$mapper_dev_name
++
++# removing the restrictions
++ulimit -Hl unlimited
++ulimit -Sl unlimited
++
++echo "[ramfs]: Limits removed, checking for tcsd"
++
++# check the tcsd
++if pgrep tcsd > /dev/null; then
++	echo "[ramfs]: tcsd is running"
++else
++	echo "[ramfs]: tcsd is not running, cannot handle rootfs encryption"
++	exec /bin/sh
++fi
++
++# allow no tpm for debugging
++tpm_selftest || no_tpm=1
++if [ -n "$no_tpm" ]; then
++	echo "[ramfs]: USING UNSEALED DISK ENCRYPTION KEY"
++	sealed_key=/efi/unsealed_key
++else
++	sealed_key=/efi/sealed_key
++fi
++
++# get access to sealed key at UEFI partition
++mkdir -p /efi
++while [ ! -b $efi_partition ]; do
++	echo "[ramfs]: waiting for $efi_partition"
++	sleep 1
++done
++mount -t vfat $efi_partition /efi
++
++if cryptsetup isLuks $ROOTDEV; then
++	echo "[ramfs]: detected encrypted root filesystem at ${ROOTDEV}"
++	if [ ! -f $sealed_key ]; then
++		echo "[ramfs]: could not find sealed key!"
++		exec /bin/sh
++	fi
++else
++	echo "[ramfs]: detected unencrypted root filesystem"
++
++	block_offset=1000
++	block_count=$(dumpe2fs $ROOTDEV | grep "Block count:")
++	block_count=${block_count##*:}
++	echo "[ramfs]: shrinking rootfs by ${block_offset} blocks to accommodate LUKS header"
++	e2fsck -f -p $ROOTDEV
++	resize2fs $ROOTDEV $[$block_count - $block_offset]
++
++	echo "[ramfs]: encrypting root filesystem"
++	luksipc -d $ROOTDEV -k $temp_key -l 4 --i-know-what-im-doing || {
++		echo "[ramfs]: encryption failed: $?"
++		exec /bin/sh
++	}
++
++	echo "[ramfs]: encryption successful, sealing the key"
++	# create symmetric encryption key
++	if [ -n "$no_tpm" ]; then
++		mv -f $temp_key $sealed_key
++	else
++		tpm_sealdata -z -p 4 -p 5 -p 8 -o $sealed_key < $temp_key
++		rm -f $temp_key
++	fi
++	if [ ! -f "$sealed_key" ]; then
++		echo "[ramfs]: couldn't store the sealed rootfs key"
++		exec /bin/sh
++	fi
++
++	# commit all moved disk blocks and the sealed key
++	sync
++fi
++
++echo "[ramfs]: opening encrypted partition $ROOTDEV as $mapper_dev_name"
++if [ -n "$no_tpm" ]; then
++	cryptsetup luksOpen --key-file=$sealed_key $ROOTDEV $mapper_dev_name
++else
++	tpm_unsealdata -z -i $sealed_key | cryptsetup luksOpen --key-file=- $ROOTDEV $mapper_dev_name
++fi
++if [ ! -e "$mapper_dev_path" ]; then
++	echo "[ramfs]: could not map the encrypted drive"
++	exec /bin/sh
++else
++	echo "[ramfs]: encrypted rootfs now open as $mapper_dev_name"
++	ROOTDEV=$mapper_dev_path
++fi
++
++# all done, cleanup
++umount /efi
++
++# continue normal rootfs mount
++mount -o $ROOTMODE ${ROOTDEV} /mnt
++
+ [ -e /etc/ramfs.pause ] && exec /bin/sh
+ 
+ # do cleanup before switch_root

@@ -1,0 +1,22 @@
+--- tcsd.orig	2015-11-03 13:31:36.505681167 +0100
++++ tcsd	2015-11-03 13:32:43.145401954 +0100
+@@ -96,7 +96,7 @@
+     $TCSD && success || failure
+     RETVAL=$?
+     [ "$RETVAL" = 0 ] && {
+-        touch /var/lock/subsys/tcsd
++        #touch /var/lock/subsys/tcsd
+         echo "OK"
+     } || {
+         echo "FAIL"
+@@ -147,6 +147,10 @@
+         stop
+         start
+         ;;
++    "")
++	ifconfig lo up
++        start
++        ;;
+     *)
+         echo $"Usage: $0 {start|stop|restart|status}"
+         RETVAL=3

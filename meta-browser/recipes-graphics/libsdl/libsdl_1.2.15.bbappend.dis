@@ -1,2 +1,0 @@
-FILESEXTRAPATHS_append := "${THISDIR}/${PN}-${PV}:"
-SRC_URI += " file://libsdl-1.2.15-xdata32.patch"

@@ -1,0 +1,8 @@
+To use this feature you must deploy the image with
+
+    ./deploy.sh -f ... -d ... -u -y -D /dev/sda2
+
+i.e. you must
+    1. use UEFI boot with vfat+ext3 (or vfat+ext4) partition setup, and
+    2. identify boot device by target device node, because UUID will change
+       during encryption.
