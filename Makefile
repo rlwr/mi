@@ -5,8 +5,18 @@ endif
 CURRENT_DIR = $(shell pwd)
 SRM_ENABLED ?= "no"
 
-LAYERS:=$(CURRENT_DIR)/meta-mi-3.0,$(CURRENT_DIR)/meta-intel,$(CURRENT_DIR)/meta-iot,$(CURRENT_DIR)/meta-browser
-FEATURES:=feature/executable-memory-protection,
+LAYERS:=$(CURRENT_DIR)/meta-mi-3.0,$(CURRENT_DIR)/meta-intel,$(CURRENT_DIR)/meta-iot
+# RL: Disable browser for now as the build fails on my setup
+#LAYERS:=$(LAYERS),$(CURRENT_DIR)/meta-browser
+# HDC layers
+LAYERS:=$(LAYERS),wr-iot,sys-version,wr-hdc-examples
+
+# Disable security for development scenarios
+EXCLUDE_LAYERS=wr-mcafee,wr-ima-appraise
+ 
+FEATURES:=feature/executable-memory-protection
+# HDC features
+FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/realtek,feature/online_updates,feature/recovery,feature/wra-demo-linux
 
 EXCLUDE_LAYERS=wr-mcafee
 
@@ -27,10 +37,9 @@ CONFIGURE_OPTIONS= --enable-board=intel-baytrail-64 \
 		   --enable-rm-oldimgs=yes \
 		   --enable-internet-download=yes \
 		   --enable-build=production \
-		   --enable-rm-oldimgs=yes \
 		   --without-layer=$(EXCLUDE_LAYERS) \
 		   --with-layer=$(LAYERS) \
-		   --with-template=$(FEATURES) 
+		   --with-template=$(FEATURES)
 
 
 DEPLOY_OPTIONS= -f export/images/$(IMAGE_NAME) -y -u -p 4G
