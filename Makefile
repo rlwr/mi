@@ -13,8 +13,9 @@ LAYERS:=$(LAYERS),wr-iot,sys-version,wr-hdc-examples
 
 # Disable security for development scenarios
 EXCLUDE_LAYERS=wr-mcafee,wr-ima-appraise
- 
-FEATURES:=feature/executable-memory-protection
+
+# Disable grsec altogether
+FEATURES:=feature/nogrsec
 # HDC features
 FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/realtek,feature/online_updates,feature/recovery,feature/wra-demo-linux
 
