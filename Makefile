@@ -41,6 +41,10 @@ CONFIGURE_OPTIONS= --enable-board=intel-baytrail-64 \
 		   --with-layer=$(LAYERS) \
 		   --with-template=$(FEATURES)
 
+ifneq ($(SSTATE_DIR),)
+CONFIGURE_OPTIONS += --with-sstate-dir=$(IDP_ROOT)
+endif
+
 
 DEPLOY_OPTIONS= -f export/images/$(IMAGE_NAME) -y -u -p 4G
 WORK_DIR=$(CURRENT_DIR)/build-mi-3.0
