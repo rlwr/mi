@@ -52,9 +52,11 @@ WORK_DIR=$(CURRENT_DIR)/build-mi-3.0
 
 #----------------------------------------------------------------------------------------------------------------
 .fetch:
-	@if [ ! -d "$(CURRENT_DIR)/meta-io" ]; then \
-        	git clone https://github.com/emea-ssg-drd/meta-iot.git; \
-    	fi
+# Use experimental meta-iot layer
+# TODO: need to merge with mainstream
+	@if [ ! -d "$(CURRENT_DIR)/meta-iot" ]; then \
+		git clone https://github.com/rlwr/meta-iot.git; \
+	fi
 
 	@if [ ! -d "$(CURRENT_DIR)/meta-browser" ]; then \
         	git clone https://github.com/emea-ssg-drd/meta-browser.git; \
