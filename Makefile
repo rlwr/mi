@@ -19,9 +19,7 @@ FEATURES:=feature/nogrsec
 # HDC features
 FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/realtek,feature/online_updates,feature/recovery,feature/wra-demo-linux
 
-EXCLUDE_LAYERS=wr-mcafee
-
-IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64-dist-srm.tar.bz2 
+IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64-dist-srm.tar.bz2
 ifeq ($(SRM_ENABLED),"no")
 EXCLUDE_LAYERS := $(EXCLUDE_LAYERS),wr-srm
 IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64.tar.bz2
