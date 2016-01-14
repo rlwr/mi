@@ -23,6 +23,9 @@ FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/
 # Wifi driver for Gigabyte board
 FEATURES:=$(FEATURES),feature/realtek
 
+# Packages for the demo
+PACKAGES:=iotivity,iotivity-nodejs,smarthome-monitor-server
+
 IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64-dist-srm.tar.bz2
 ifeq ($(SRM_ENABLED),"no")
 EXCLUDE_LAYERS := $(EXCLUDE_LAYERS),wr-srm
@@ -42,7 +45,8 @@ CONFIGURE_OPTIONS= --enable-board=intel-baytrail-64 \
 		   --enable-build=production \
 		   --without-layer=$(EXCLUDE_LAYERS) \
 		   --with-layer=$(LAYERS) \
-		   --with-template=$(FEATURES)
+		   --with-template=$(FEATURES) \
+		   --with-package=$(PACKAGES)
 
 ifneq ($(SSTATE_DIR),)
 CONFIGURE_OPTIONS += --with-sstate-dir=$(SSTATE_DIR)
