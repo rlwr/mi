@@ -41,7 +41,7 @@ CONFIGURE_OPTIONS= --enable-board=intel-baytrail-64 \
 		   --with-template=$(FEATURES)
 
 ifneq ($(SSTATE_DIR),)
-CONFIGURE_OPTIONS += --with-sstate-dir=$(IDP_ROOT)
+CONFIGURE_OPTIONS += --with-sstate-dir=$(SSTATE_DIR)
 endif
 
 
