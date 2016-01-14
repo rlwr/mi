@@ -17,7 +17,9 @@ EXCLUDE_LAYERS=wr-mcafee,wr-ima-appraise
 # Disable grsec altogether
 FEATURES:=feature/nogrsec
 # HDC features
-FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/realtek,feature/online_updates,feature/recovery,feature/wra-demo-linux
+FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/online_updates,feature/recovery,feature/wra-demo-linux
+# Wifi driver for Gigabyte board
+FEATURES:=$(FEATURES),feature/realtek
 
 IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64-dist-srm.tar.bz2
 ifeq ($(SRM_ENABLED),"no")
