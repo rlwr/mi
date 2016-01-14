@@ -10,6 +10,8 @@ LAYERS:=$(CURRENT_DIR)/meta-mi-3.0,$(CURRENT_DIR)/meta-intel,$(CURRENT_DIR)/meta
 #LAYERS:=$(LAYERS),$(CURRENT_DIR)/meta-browser
 # HDC layers
 LAYERS:=$(LAYERS),wr-iot,sys-version,wr-hdc-examples
+# IoT demo layer
+LAYERS:=$(LAYERS),$(CURRENT_DIR)/meta-iot-demo
 
 # Disable security for development scenarios
 EXCLUDE_LAYERS=wr-mcafee,wr-ima-appraise
@@ -61,6 +63,10 @@ WORK_DIR=$(CURRENT_DIR)/build-mi-3.0
 	@if [ ! -d "$(CURRENT_DIR)/meta-browser" ]; then \
         	git clone https://github.com/emea-ssg-drd/meta-browser.git; \
     	fi
+
+	@if [ ! -d "$(CURRENT_DIR)/meta-iot-demo" ]; then \
+		git clone https://github.com/rlwr/meta-iot-demo.git; \
+	fi
 
 image: .config
 	@make -C $(WORK_DIR) fs
