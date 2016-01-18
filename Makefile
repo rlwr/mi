@@ -28,7 +28,7 @@ PACKAGES:=lib32-iotivity,lib32-iotivity-nodejs,lib32-smarthome-monitor-client
 # Need to include the 32bit version of nodejs here because it doesn't compile
 # in 64 bit mode (and IDP uses multilib). Adding nodejs as an RDEPEND will also
 # trigger a 64bit, which will fail
-PACKAGES:=$(PACKAGES),lib32-nodejs,lib32-util-linux-libuuid
+PACKAGES:=$(PACKAGES),lib32-nodejs,lib32-util-linux-libuuid,lib32-glib-2.0
 PACKAGES:=$(PACKAGES),redis
 
 IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64-dist-srm.tar.bz2
