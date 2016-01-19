@@ -34,6 +34,8 @@ PACKAGES:=$(PACKAGES),lib32-nodejs,lib32-util-linux-libuuid,lib32-glib-2.0
 PACKAGES:=$(PACKAGES),redis
 # Helix App Cloud agent
 PACKAGES:=$(PACKAGES),hac,sshfs-fuse
+# Helix App Cloud gateway (for other devices)
+PACKAGES:=$(PACKAGES),hac-gateway
 
 IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64-dist-srm.tar.bz2
 ifeq ($(SRM_ENABLED),"no")
