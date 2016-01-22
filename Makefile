@@ -36,6 +36,8 @@ PACKAGES:=$(PACKAGES),redis
 PACKAGES:=$(PACKAGES),hac,sshfs-fuse
 # Helix App Cloud gateway (for other devices)
 PACKAGES:=$(PACKAGES),hac-gateway
+# Helix Device Cloud MQTT proxy
+PACKAGES:=$(PACKAGES),hdc-mqtt-proxy
 
 IMAGE_NAME=wrlinux-image-idp-intel-baytrail-64-dist-srm.tar.bz2
 ifeq ($(SRM_ENABLED),"no")
