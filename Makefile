@@ -31,6 +31,8 @@ PACKAGES:=lib32-iotivity,lib32-iotivity-nodejs,lib32-smarthome-monitor-client
 # in 64 bit mode (and IDP uses multilib). Adding nodejs as an RDEPEND will also
 # trigger a 64bit, which will fail
 PACKAGES:=$(PACKAGES),lib32-nodejs,lib32-util-linux-libuuid,lib32-glib-2.0
+# Make sure to leave the 64 bit versions or the system will not boot!
+PACKAGES:=$(PACKAGES),util-linux-libuuid,glib-2.0
 PACKAGES:=$(PACKAGES),redis
 # Helix App Cloud agent
 PACKAGES:=$(PACKAGES),hac,sshfs-fuse
