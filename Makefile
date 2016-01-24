@@ -26,7 +26,7 @@ FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/
 FEATURES:=$(FEATURES),feature/realtek
 
 # Packages for the demo
-PACKAGES:=lib32-iotivity,lib32-iotivity-nodejs,lib32-smarthome-monitor-client
+PACKAGES:=lib32-iotivity,lib32-iotivity-nodejs-client,lib32-smarthome-monitor-client
 # Need to include the 32bit version of nodejs here because it doesn't compile
 # in 64 bit mode (and IDP uses multilib). Adding nodejs as an RDEPEND will also
 # trigger a 64bit, which will fail
