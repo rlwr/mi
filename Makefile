@@ -38,6 +38,9 @@ PACKAGES:=$(PACKAGES),redis
 PACKAGES:=$(PACKAGES),hac,sshfs-fuse
 # Helix App Cloud gateway (for other devices)
 PACKAGES:=$(PACKAGES),hac-gateway
+# MQTT.js prerequisites
+PACKAGES:=$(PACKAGES),python-modules,python-misc,python-stringold,python-compiler,python-io,python-math,python-crypt,python-multiprocessing,python-threading,python-textutils,python-shell,python-subprocess,python-fcntl,python-pickle
+PACKAGES:=$(PACKAGES),node-mqtt
 # Helix Device Cloud MQTT proxy
 PACKAGES:=$(PACKAGES),hdc-mqtt-proxy
 
