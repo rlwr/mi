@@ -24,6 +24,8 @@ FEATURES:=feature/nogrsec
 FEATURES:=$(FEATURES),feature/package-management,feature/remote-session,feature/online_updates,feature/recovery,feature/wra-demo-linux
 # Wifi driver for Gigabyte board
 FEATURES:=$(FEATURES),feature/realtek
+# Add support for phone tethering
+FEATURES:=$(FEATURES),feature/usb-phone
 
 # Packages for the demo
 PACKAGES:=lib32-iotivity,lib32-iotivity-nodejs-client,lib32-smarthome-monitor-client
